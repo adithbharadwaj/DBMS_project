@@ -66,7 +66,6 @@ def insert_office(usn = 'null', name = 'null', year = 'null', sem='null' , branc
 def delete_st(usn):
 	
 	conn, cur = connect()
-	print(usn)
 	cur.execute('select * from students where usn=?', (usn, ))
 	d = cur.fetchall()
 
@@ -90,7 +89,7 @@ def delete_st(usn):
 
 	conn.commit()
 
-	select_all_students()
+	#select_all_students()
 
 
 def select_all_events():
@@ -171,3 +170,10 @@ def check_login(usn):
 				return 'Not'
 
 	conn.close()
+
+select_all_students()
+print('----')
+select_all_office()
+print('----')
+select_all_core()
+

@@ -3,9 +3,7 @@ from queries_test import *
 
 app = Flask(__name__)
 
-
 who_is_it = None
-
 
 # login page comes first
 # initial page. the page that is open when we start the server in localhost:5000
@@ -21,6 +19,8 @@ def login():
 # if this url is of the form "http://localhost:5000/login", then it goes to the login page described by the login function that is given below. 
 @app.route('/verify', methods = ['POST', 'GET'])
 def details():
+
+	global who_is_it
 
 	if request.method == 'POST':
 		user = request.form['usn']
@@ -64,9 +64,12 @@ def delete_member():
 	if(request.method == 'POST'):
 		usn_st = request.form['usn_delete']
 
+		if(who_is_it == 'U'):
+			return render_template('cannot_delete.html')
+
 		delete_st(usn_st)
 
-		return render_template('home.html')
+	return render_template('home.html')
 
 
 
