@@ -44,10 +44,30 @@ def details():
 def insert_members():
 	return render_template('insert_members.html')
 
+@app.route('/events')
+def disp_events():
+	return render_template('events.html')
+
 
 @app.route('/insertcore')
 def insert_core_members():
 	return render_template('insert_core.html')
+
+@app.route('/delete')
+def disp_delete_page():
+	return render_template('delete.html')
+
+
+@app.route('/deletemember', methods = ['POST', 'GET'])
+def delete_member():
+
+	if(request.method == 'POST'):
+		usn_st = request.form['usn_delete']
+
+		delete_st(usn_st)
+
+		return render_template('home.html')
+
 
 
 @app.route('/InsertMembersForm', methods = ['POST', 'GET'])

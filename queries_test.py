@@ -24,32 +24,6 @@ def connect():
 	conn = sqlite3.connect("./onyx.db")
 	cur = conn.cursor()
 
-	'''
-	cur.execute("select * from students")
-	data = cur.fetchall()
-
-	for r in data:
-		print(r)
-
-	cur.execute("select * from core")
-	data = cur.fetchall()
-
-	for r in data:
-		print(r)
-
-	cur.execute("select * from office")
-	data = cur.fetchall()
-
-	for r in data:
-		print(r)
-	
-	cur.execute("select * from events")
-	data = cur.fetchall()
-
-	for r in data:
-		print(r)
-	'''
-
 	return conn, cur
 
 
@@ -62,6 +36,15 @@ def insert_student(usn = 'null', name = 'null', year = 'null', sem='null' , bran
 
 	select_all_students()
 
+def insert_event(e_id = 'null', name = 'null', date = 'null', venue='null' , concept = 'null'):
+
+	conn, cur = connect()
+	cur.execute('insert into events values(?, ?, ?, ?, ?)', [e_id, name, date, venue, concept])
+	conn.commit()
+	conn.close()
+
+	select_all_events()
+
 def insert_core(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', pod= 'null'):
 
 	conn, cur = connect()
@@ -70,6 +53,58 @@ def insert_core(usn = 'null', name = 'null', year = 'null', sem='null' , branch 
 	conn.close()
 
 	select_all_core()
+
+def insert_office(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', designation = 'null'):
+
+	conn, cur = connect()
+	cur.execute('insert into office values(?, ?, ?, ?, ?, ?)', [usn, name, year, sem, branch, designation])
+	conn.commit()
+	conn.close()
+
+	select_all_office()
+
+def delete_st(usn):
+	
+	conn, cur = connect()
+	print(usn)
+	cur.execute('select * from students where usn=?', (usn, ))
+	d = cur.fetchall()
+
+	if(d):
+		cur.execute('delete from students where usn = ?', (usn, ))
+	else:
+		cur.execute('select * from core where usn=?', (usn, ))
+		d = cur.fetchall()
+
+		if(d):
+			cur.execute('delete from core where usn = ?', (usn, ))
+		else:
+			cur.execute('select * from office where usn=?', (usn, ))
+			d = cur.fetchall()
+
+			if(d):
+				cur.execute('delete from office where usn = ?', (usn, ))
+
+			else:
+				print('invalid usn')
+
+	conn.commit()
+
+	select_all_students()
+
+
+def select_all_events():
+
+	conn, cur = connect()
+	cur.execute('select * from events')
+
+	data = cur.fetchall()
+	conn.close()
+
+	for r in data:
+		print(r)
+
+	return data
 
 def select_all_students():
 
@@ -88,6 +123,19 @@ def select_all_core():
 
 	conn, cur = connect()
 	cur.execute('select * from core')
+
+	data = cur.fetchall()
+	conn.close()
+
+	for r in data:
+		print(r)
+
+	return data	
+
+def select_all_office():
+
+	conn, cur = connect()
+	cur.execute('select * from office')
 
 	data = cur.fetchall()
 	conn.close()
@@ -123,7 +171,3 @@ def check_login(usn):
 				return 'Not'
 
 	conn.close()
-
-
-
-
