@@ -91,6 +91,20 @@ def delete_st(usn):
 
 	#select_all_students()
 
+def update_member_query(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', no_events= 'null', no_wins = 'null'):
+
+	conn, cur = connect()
+	cur.execute('update students set name = ?, year = ?, sem = ?, branch = ?, no_of_events = ?, no_of_wins = ?', [name, year, sem, branch, no_events, no_wins])
+	conn.commit()
+	conn.close()
+
+def update_core_query(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', pod= 'null'):
+
+	conn, cur = connect()
+	cur.execute('update core set name = ?, year = ?, sem = ?, branch = ?, pod = ?', [name, year, sem, branch, pod])
+	conn.commit()
+	conn.close()
+
 
 def select_all_events():
 
@@ -171,9 +185,9 @@ def check_login(usn):
 
 	conn.close()
 
-select_all_students()
-print('----')
-select_all_office()
-print('----')
-select_all_core()
 
+select_all_students()
+print('-----')
+select_all_core()
+print('-----')
+select_all_office()

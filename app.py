@@ -57,6 +57,57 @@ def insert_core_members():
 def disp_delete_page():
 	return render_template('delete.html')
 
+@app.route('/updatecore')
+def disp_update():
+	return render_template('update_core.html')
+
+@app.route('/updatemember')
+def disp_member():
+	return render_template('update_member.html')
+
+@app.route('/viewteam')
+def disp_team():
+	return render_template('team.html')
+
+
+@app.route('/UpdateCoreForm', methods = ['POST', 'GET'])
+def update_core_form():
+
+	if(request.method == 'POST'):
+		name = request.form['name']
+		usn = request.form['usn']
+		year = request.form['year']
+		branch = request.form['branch']
+		sem = request.form['semester']
+		pod = request.form['pod']
+
+		if(who_is_it == 'U' or who_is_it == 'C'):
+			return render_template('cannot_delete.html')
+		else:
+			
+			update_core_query(usn, name, year, sem, branch, pod)
+			return render_template('home.html')
+
+@app.route('/UpdateMemberForm', methods = ['POST', 'GET'])
+def update_member_form():
+
+	if(request.method == 'POST'):
+		name = request.form['name']
+		usn = request.form['usn']
+		year = request.form['year']
+		branch = request.form['branch']
+		sem = request.form['semester']
+		no_events = request.form['number_of_events_attended']
+		no_of_comps = request.form['number_of_competitions']
+
+
+		if(who_is_it == 'U'):
+			return render_template('cannot_delete.html')
+		else:
+			
+			update_member_query(usn, name, year, sem, branch, no_events, no_of_comps)
+			return render_template('home.html')
+
 
 @app.route('/deletemember', methods = ['POST', 'GET'])
 def delete_member():
@@ -77,6 +128,10 @@ def delete_member():
 def insert_members_form():
 
 	if(request.method == 'POST'):
+
+		if(who_is_it == 'U'):
+			return render_template('cannot_delete.html')
+
 		name = request.form['name']
 		usn = request.form['usn']
 		year = request.form['year']
@@ -93,6 +148,10 @@ def insert_members_form():
 def insert_core_form():
 
 	if(request.method == 'POST'):
+
+		if(who_is_it == 'U' or who_is_it == 'C'):
+			return render_template('cannot_delete.html')
+
 		name = request.form['name']
 		usn = request.form['usn']
 		year = request.form['year']
@@ -103,8 +162,6 @@ def insert_core_form():
 		insert_core(usn, name, year, sem, branch, pod)
 
 		return render_template('home.html')
-
-
 
 
 # redirects the user who logs in to the page that contains the hello() function (the /user/<name> page)
