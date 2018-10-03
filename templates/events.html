@@ -9,6 +9,30 @@
 <body>
 		<h1 style="font-family: 'K2D';font-size: 100PX;stroke: rgb(100,100,300);text-align: center;background-color: rgb(5,100,80);">Events</h1>
 
+		<table border = 1>
+
+         		<tr>
+				    <th>Event ID</th>
+				    <th>Name</th>
+				    <th>Date</th>
+				    <th>Venue</th>
+				    <th>Concept</th>
+	            </tr>
+
+         	{% for row in result %}
+
+         	    <tr>
+				    <td>{{row[0]}}</td>
+				    <td>{{row[1]}}</td>
+				    <td>{{row[2]}}</td>
+				    <td>{{row[3]}}</td>
+				    <td>{{row[4]}}</td>
+	            </tr>
+         
+	    	{% endfor %}
+         
+      </table>
+
 
 </body>
 </html>

@@ -1,6 +1,10 @@
 from flask import Flask, redirect, url_for, request, render_template
 from queries_test import *
 
+import matplotlib.pyplot as plt
+from scipy import misc
+
+
 app = Flask(__name__)
 
 who_is_it = None
@@ -46,7 +50,11 @@ def insert_members():
 
 @app.route('/events')
 def disp_events():
-	return render_template('events.html')
+
+	conn, cur = connect()
+	data = select_all_events()
+
+	return render_template('events.html', result = data)
 
 
 @app.route('/insertcore')
@@ -68,6 +76,18 @@ def disp_member():
 @app.route('/viewteam')
 def disp_team():
 	return render_template('team.html')
+
+@app.route('/graph')
+def disp_graph():
+
+	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+	y = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+
+	plt.scatter(x, y)
+	plt.savefig('./static/graph.png')
+
+	return render_template('graph.html')
+
 
 
 @app.route('/UpdateCoreForm', methods = ['POST', 'GET'])
@@ -163,6 +183,30 @@ def insert_core_form():
 
 		return render_template('home.html')
 
+
+@app.route('/viewoffice')
+def view_office():
+
+	conn, cur = connect()
+	data = select_all_office()
+
+	return render_template('view_office.html', result = data)
+
+@app.route('/viewcore')
+def view_core():
+
+	conn, cur = connect()
+	data = select_all_core()
+
+	return render_template('view_core.html', result = data)
+
+@app.route('/viewmembers')
+def view_mem():
+
+	conn, cur = connect()
+	data = select_all_students()
+
+	return render_template('view_members.html', result = data,)
 
 # redirects the user who logs in to the page that contains the hello() function (the /user/<name> page)
 @app.route('/login', methods = ['POST', 'GET'])

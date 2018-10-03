@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Team Page</title>
+	<link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
+</head>
+<body>
+	<h1 style="font-family: 'K2D';font-size: 75px;stroke: rgb(100,100,300);text-align: center;background-color: rgb(100,0,0);">The Team</h1>
+		<button onclick="location.href = 'http://localhost:5000/viewoffice';" >Office Bearers</button>
+	<button onclick="location.href = 'http://localhost:5000/viewcore';">Core Team</button>
+	<button onclick="location.href = 'http://localhost:5000/viewmembers';">Members</button>
+      <table border = 1>
+
+         		<tr>
+				    <th>USN</th>
+				    <th>Name</th>
+				    <th>Year</th>
+				    <th>Sem</th>
+				    <th>Branch</th>
+				    <th>POD</th>
+	            </tr>
+
+         	{% for row in result %}
+
+         	    <tr>
+				    <td>{{row[0]}}</td>
+				    <td>{{row[1]}}</td>
+				    <td>{{row[2]}}</td>
+				    <td>{{row[3]}}</td>
+				    <td>{{row[4]}}</td>
+				    <td>{{row[5]}}</td>
+	            </tr>
+         
+	    	{% endfor %}
+         
+      </table>
+
+</body>
+</html>
