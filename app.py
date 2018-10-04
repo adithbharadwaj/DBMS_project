@@ -44,6 +44,10 @@ def details():
 		return render_template('home.html', user = who)
 
 
+@app.route('/home')
+def disp_home_page():
+	return render_template('home.html')
+
 @app.route('/insertmembers')
 def insert_members():
 	return render_template('insert_members.html')
@@ -77,14 +81,41 @@ def disp_member():
 def disp_team():
 	return render_template('team.html')
 
+
 @app.route('/graph')
 def disp_graph():
 
-	x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-	y = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+	data = group_students_by_branch()
+	val = []
+	names = []
 
-	plt.scatter(x, y)
+	for r in data:
+		val.append(r[0])
+
+	for r in data:
+		names.append(r[1])
+
+	plt.subplot(121)
+	plt.bar(x = names, height = val, width = 0.2, align = 'center', color = 'g')
+	plt.title('Students Grouped by Branch')
+
+	data1 = group_students_by_year()
+	val1 = []
+	names1 = []
+
+	for r in data1:
+		val1.append(r[0])
+
+	for r in data1:
+		names1.append(r[1])
+
+	plt.subplot(122)
+	val1.sort(reverse = True)
+	plt.bar(x = names1, height = val1, width = 0.2, align = 'center', color = 'r')
+	plt.title('Students Grouped by Years')
+	
 	plt.savefig('./static/graph.png')
+
 
 	return render_template('graph.html')
 

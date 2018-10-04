@@ -94,14 +94,14 @@ def delete_st(usn):
 def update_member_query(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', no_events= 'null', no_wins = 'null'):
 
 	conn, cur = connect()
-	cur.execute('update students set name = ?, year = ?, sem = ?, branch = ?, no_of_events = ?, no_of_wins = ?', [name, year, sem, branch, no_events, no_wins])
+	cur.execute('update students set name = ?, year = ?, sem = ?, branch = ?, no_of_events = ?, no_of_wins = ? where usn = ?', [name, year, sem, branch, no_events, no_wins, usn])
 	conn.commit()
 	conn.close()
 
 def update_core_query(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', pod= 'null'):
 
 	conn, cur = connect()
-	cur.execute('update core set name = ?, year = ?, sem = ?, branch = ?, pod = ?', [name, year, sem, branch, pod])
+	cur.execute('update core set name = ?, year = ?, sem = ?, branch = ?, pod = ? where usn = ?', [name, year, sem, branch, pod, usn])
 	conn.commit()
 	conn.close()
 
@@ -185,9 +185,41 @@ def check_login(usn):
 
 	conn.close()
 
+def group_students_by_branch():
+
+	conn, cur = connect()
+
+	cur.execute("select count(*) as count_branch, branch from students group by branch order by count_branch desc")
+	data = cur.fetchall()
+
+	for r in data:
+		print(r)
+
+	return data
+
+
+def group_students_by_year():
+
+	conn, cur = connect()
+
+	cur.execute("select count(*) as count_year, year from students group by year order by count_year desc")
+	data = cur.fetchall()
+
+	for r in data:
+		print(r)
+
+	return data
+
+
 
 select_all_students()
 print('-----')
 select_all_core()
 print('-----')
 select_all_office()
+print('------')
+group_students_by_branch()
+print('-------')
+group_students_by_year()
+
+
