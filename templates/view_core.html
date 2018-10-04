@@ -9,29 +9,29 @@
 		<button onclick="location.href = 'http://localhost:5000/viewoffice';" >Office Bearers</button>
 	<button onclick="location.href = 'http://localhost:5000/viewcore';">Core Team</button>
 	<button onclick="location.href = 'http://localhost:5000/viewmembers';">Members</button>
-      <table border = 1>
+      <table border style="padding: 10px;border:3px solid black;text-align: center;width: 100%;height: 50%;border-collapse: collapse; ">
 
-         		<tr>
-				    <th>USN</th>
-				    <th>Name</th>
-				    <th>Year</th>
-				    <th>Sem</th>
-				    <th>Branch</th>
-				    <th>POD</th>
-	            </tr>
+               <tr style="height:50px;border-bottom: 3px solid black;border-left: 3px solid black">
+                <th ><bold>USN</bold></th>
+                <th><bold>Name</bold></th>
+                <th><bold>Year</bold></th>
+                <th><bold>Sem</bold></th>
+                <th><bold>Branch</bold></th>
+                <th><bold>POD</bold></th>
+               </tr>
 
-         	{% for row in result %}
+            {% for row in result %}
 
-         	    <tr>
-				    <td>{{row[0]}}</td>
-				    <td>{{row[1]}}</td>
-				    <td>{{row[2]}}</td>
-				    <td>{{row[3]}}</td>
-				    <td>{{row[4]}}</td>
-				    <td>{{row[5]}}</td>
-	            </tr>
+                <tr style="height: 50px">
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+                <td>{{row[4]}}</td>
+                <td>{{row[5]}}</td>
+               </tr>
          
-	    	{% endfor %}
+         {% endfor %}
          
       </table>
 

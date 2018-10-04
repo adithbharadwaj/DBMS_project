@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, request, render_template
 from queries_test import *
 
 import matplotlib.pyplot as plt
-from scipy import misc
+#from scipy import misc
 
 
 app = Flask(__name__)
