@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Events</title>
+	<link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
+
+
+</head>
+<body>
+		<h1 style="font-family: 'K2D';font-size: 100PX;stroke: rgb(100,100,300);text-align: center;background-color: rgb(192,192,192);">BookHub</h1><br><br><br>
+		<button onclick="location.href = 'http://localhost:5000/viewbooks';">Books Available</button>
+		<button onclick="location.href = 'http://localhost:5000/viewstudentbooks';">Books purchased (students)</button>
+
+		<table>
+
+               <tr>
+
+
+				    <th><bold>USN</bold></th>
+				    <th><bold>Name</bold></th>
+				    <th><bold>Year</bold></th>
+				    <th><bold>Sem</bold></th>
+				    <th><bold>Branch</bold></th>
+				    <th><bold>Book Name</bold></th>
+				    <th><bold>Author</bold></th>
+				    <th><bold>Stream</bold></th>
+				    <th><bold>Cost</bold></th>
+
+	            </tr>
+
+         	{% for row in result %}
+
+         	    <tr style="height:50px">
+				    <td>{{row[0]}}</td>
+				    <td>{{row[1]}}</td>
+				    <td>{{row[2]}}</td>
+				    <td>{{row[3]}}</td>
+				    <td>{{row[4]}}</td>
+				    <td>{{row[5]}}</td>
+				    <td>{{row[6]}}</td>
+					<td>{{row[7]}}</td>
+				    <td>{{row[8]}}</td>
+	            </tr>
+         
+	    	{% endfor %}
+         
+      </table>
+
+	</body>
+	</html>

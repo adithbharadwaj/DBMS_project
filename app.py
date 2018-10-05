@@ -243,6 +243,22 @@ def view_mem():
 
 	return render_template('view_members.html', result = data,)
 
+
+@app.route('/viewbooks')
+def disp_books():
+	conn, cur = connect()
+	data = select_all_books()
+
+	return render_template('view_books.html', result = data)
+
+
+@app.route('/viewstudentbooks')
+def disp_books_with_students():
+	conn, cur = connect()
+	data = join_books_and_students()
+
+	return render_template('view_noOf_students_withbooks.html', result = data)
+
 # redirects the user who logs in to the page that contains the hello() function (the /user/<name> page)
 @app.route('/login', methods = ['POST', 'GET'])
 def log():
