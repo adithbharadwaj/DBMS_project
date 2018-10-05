@@ -289,7 +289,40 @@ def join_books_and_students():
 	return data
 
 
+'''
+-----------------------------------------------------------------------------------------------------------------
+Views
+'''
 
+def create_books_view():
+
+	conn, cur = connect()
+
+	cur.execute('''CREATE VIEW show_books as SELECT 
+					book_name,
+					author,
+					stream,
+					cost
+					from bookhub;''')
+
+	conn.commit()
+	conn.close()
+
+def show_books_view():
+
+	conn, cur = connect()
+
+	cur.execute('SELECT * from show_books')
+	data = cur.fetchall()
+	conn.close()
+
+	for r in data:
+		print(r)
+
+	return data
+
+
+'''
 select_all_students()
 print('-----')
 select_all_core()
@@ -303,3 +336,6 @@ print('-------')
 select_all_books()
 print('--------')
 join_books_and_students()
+print('----------')
+show_books_view()
+'''
