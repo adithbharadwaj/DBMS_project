@@ -81,6 +81,10 @@ def disp_member():
 def disp_team():
 	return render_template('team.html')
 
+@app.route('/bookhub')
+def disp_bookhub_page():
+	return render_template('books.html')
+
 
 @app.route('/graph')
 def disp_graph():

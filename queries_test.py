@@ -1,7 +1,14 @@
 import sqlite3
 
+
+'''
+
+Create Statements
+
+'''
 def create_db():
 
+	conn, cur = connect()
 
 	#creating tables in the database
 	cur.execute("CREATE TABLE students(usn varchar(11) primary key, name varchar(20), year int, sem int, branch varchar(20), no_of_events int, no_of_wins int)")
@@ -18,6 +25,16 @@ def create_db():
 
 	conn.commit()
 
+def create_bookhub_database():
+
+	conn, cur = connect()
+
+	cur.execute('''CREATE TABLE bookhub(book_name varchar(20), author varchar(20), stream varchar(10), 
+				cost int, quantity int, sold_price int, usn varchar(10), foreign key(usn) references students(usn) )''')
+
+	conn.commit()
+	conn.close()
+
 
 def connect():
 
@@ -27,14 +44,18 @@ def connect():
 	return conn, cur
 
 
+'''
+------------------------------------------------------------------------------------------------------
+
+Insert queries:
+
+'''
 def insert_student(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', no_events= 'null', no_wins = 'null'):
 
 	conn, cur = connect()
 	cur.execute('insert into students values(?, ?, ?, ?, ?, ?, ?)', [usn, name, year, sem, branch, no_events, no_wins])
 	conn.commit()
 	conn.close()
-
-	select_all_students()
 
 def insert_event(e_id = 'null', name = 'null', date = 'null', venue='null' , concept = 'null'):
 
@@ -43,16 +64,12 @@ def insert_event(e_id = 'null', name = 'null', date = 'null', venue='null' , con
 	conn.commit()
 	conn.close()
 
-	select_all_events()
-
 def insert_core(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', pod= 'null'):
 
 	conn, cur = connect()
 	cur.execute('insert into core values(?, ?, ?, ?, ?, ?)', [usn, name, year, sem, branch, pod])
 	conn.commit()
 	conn.close()
-
-	select_all_core()
 
 def insert_office(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', designation = 'null'):
 
@@ -61,35 +78,18 @@ def insert_office(usn = 'null', name = 'null', year = 'null', sem='null' , branc
 	conn.commit()
 	conn.close()
 
-	select_all_office()
+def insert_books(book_name = 'null', author ='null', stream = 'null', cost='null', quantity='null', sold_price='null', usn='null'):
 
-def delete_st(usn):
-	
 	conn, cur = connect()
-	cur.execute('select * from students where usn=?', (usn, ))
-	d = cur.fetchall()
-
-	if(d):
-		cur.execute('delete from students where usn = ?', (usn, ))
-	else:
-		cur.execute('select * from core where usn=?', (usn, ))
-		d = cur.fetchall()
-
-		if(d):
-			cur.execute('delete from core where usn = ?', (usn, ))
-		else:
-			cur.execute('select * from office where usn=?', (usn, ))
-			d = cur.fetchall()
-
-			if(d):
-				cur.execute('delete from office where usn = ?', (usn, ))
-
-			else:
-				print('invalid usn')
-
+	cur.execute('insert into bookhub values(?, ?, ?, ?, ?, ?, ?)', [book_name, author, stream, cost, quantity, sold_price, usn])
 	conn.commit()
+	conn.close()	
 
-	#select_all_students()
+'''
+----------------------------------------------------------------------------------------
+
+Update Queries
+'''
 
 def update_member_query(usn = 'null', name = 'null', year = 'null', sem='null' , branch = 'null', no_events= 'null', no_wins = 'null'):
 
@@ -105,6 +105,12 @@ def update_core_query(usn = 'null', name = 'null', year = 'null', sem='null' , b
 	conn.commit()
 	conn.close()
 
+'''
+------------------------------------------------------------------------------------------------------
+
+selection queries:
+
+'''
 
 def select_all_events():
 
@@ -158,6 +164,91 @@ def select_all_office():
 
 	return data	
 
+def select_all_books():
+
+	conn, cur = connect()
+	cur.execute('select * from bookhub')
+
+	data = cur.fetchall()
+	conn.close()
+
+	for r in data:
+		print(r)
+
+	return data
+
+'''
+------------------------------------------------------------------------------------------------------------------
+Group Queries
+'''
+
+def group_students_by_branch():
+
+	conn, cur = connect()
+
+	cur.execute("select count(*) as count_branch, branch from students group by branch order by count_branch desc")
+	data = cur.fetchall()
+	conn.close()
+
+	for r in data:
+		print(r)
+
+	return data
+
+
+def group_students_by_year():
+
+	conn, cur = connect()
+
+	cur.execute("select count(*) as count_year, year from students group by year order by count_year desc")
+	data = cur.fetchall()
+	conn.close()
+
+	for r in data:
+		print(r)
+
+	return data
+
+
+
+'''
+delete if he/she exists in the database.
+if the usn belongs to students table, delete from students
+else if it belongs to core, delete from core
+else if it belongs to office bearers, delete from that.
+else it doesnt belong to any table. (not a member)
+'''
+def delete_st(usn):
+	
+	conn, cur = connect()
+	cur.execute('select * from students where usn=?', (usn, ))
+	d = cur.fetchall()
+
+	if(d):
+		cur.execute('delete from students where usn = ?', (usn, ))
+	else:
+		cur.execute('select * from core where usn=?', (usn, ))
+		d = cur.fetchall()
+
+		if(d):
+			cur.execute('delete from core where usn = ?', (usn, ))
+		else:
+			cur.execute('select * from office where usn=?', (usn, ))
+			d = cur.fetchall()
+
+			if(d):
+				cur.execute('delete from office where usn = ?', (usn, ))
+
+			else:
+				print('invalid usn')
+
+	conn.commit()
+
+	#select_all_students()
+
+'''
+Authenticating the user and checking to see if the usn exists in the database or not.
+'''
 def check_login(usn):
 
 	conn, cur = connect()
@@ -185,25 +276,18 @@ def check_login(usn):
 
 	conn.close()
 
-def group_students_by_branch():
+'''
+Joining students and books table to get the students who have sold the book.
+Used Natural Join to eliminate usn appearing twice in the result. 
+'''
+
+def join_books_and_students():
 
 	conn, cur = connect()
 
-	cur.execute("select count(*) as count_branch, branch from students group by branch order by count_branch desc")
+	cur.execute("select * from students natural join bookhub where students.usn = bookhub.usn order by year")
 	data = cur.fetchall()
-
-	for r in data:
-		print(r)
-
-	return data
-
-
-def group_students_by_year():
-
-	conn, cur = connect()
-
-	cur.execute("select count(*) as count_year, year from students group by year order by count_year desc")
-	data = cur.fetchall()
+	conn.close()
 
 	for r in data:
 		print(r)
@@ -221,5 +305,7 @@ print('------')
 group_students_by_branch()
 print('-------')
 group_students_by_year()
-
-
+print('-------')
+select_all_books()
+print('--------')
+join_books_and_students()
