@@ -2,9 +2,7 @@ import sqlite3
 
 
 '''
-
 Create Statements
-
 '''
 def create_db():
 
@@ -43,10 +41,8 @@ def connect():
 
 	return conn, cur
 
-
 '''
 ------------------------------------------------------------------------------------------------------
-
 Insert queries:
 
 '''
@@ -208,8 +204,6 @@ def group_students_by_year():
 		print(r)
 
 	return data
-
-
 
 '''
 delete if he/she exists in the database.

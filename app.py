@@ -1,13 +1,18 @@
 from flask import Flask, redirect, url_for, request, render_template
 from queries_test import *
-
 import matplotlib.pyplot as plt
-#from scipy import misc
 
 
 app = Flask(__name__)
 
+# global variable to keep track of which group the user belongs to. Student, Core or office bearer.
+# this helps us take care of the permissions later.
 who_is_it = None
+
+'''
+---------------------------------------------------------------------------------------------
+routing to Display the Pages
+'''
 
 # login page comes first
 # initial page. the page that is open when we start the server in localhost:5000
@@ -15,6 +20,42 @@ who_is_it = None
 def login():
 	return render_template('login.html')
 
+@app.route('/home')
+def disp_home_page():
+	return render_template('home.html')
+
+@app.route('/insertmembers')
+def insert_members():
+	return render_template('insert_members.html')
+
+@app.route('/events')
+def disp_events():
+	data = select_all_events()
+	return render_template('events.html', result = data)
+
+@app.route('/insertcore')
+def insert_core_members():
+	return render_template('insert_core.html')
+
+@app.route('/delete')
+def disp_delete_page():
+	return render_template('delete.html')
+
+@app.route('/updatecore')
+def disp_update():
+	return render_template('update_core.html')
+
+@app.route('/updatemember')
+def disp_member():
+	return render_template('update_member.html')
+
+@app.route('/viewteam')
+def disp_team():
+	return render_template('team.html')
+
+@app.route('/bookhub')
+def disp_bookhub_page():
+	return render_template('books.html')
 
 # getting the details of a student from a form (in the html)
 # and using those details to render a template that dynamically displays the details in a page
@@ -43,49 +84,7 @@ def details():
 
 		return render_template('home.html', user = who)
 
-
-@app.route('/home')
-def disp_home_page():
-	return render_template('home.html')
-
-@app.route('/insertmembers')
-def insert_members():
-	return render_template('insert_members.html')
-
-@app.route('/events')
-def disp_events():
-
-	conn, cur = connect()
-	data = select_all_events()
-
-	return render_template('events.html', result = data)
-
-
-@app.route('/insertcore')
-def insert_core_members():
-	return render_template('insert_core.html')
-
-@app.route('/delete')
-def disp_delete_page():
-	return render_template('delete.html')
-
-@app.route('/updatecore')
-def disp_update():
-	return render_template('update_core.html')
-
-@app.route('/updatemember')
-def disp_member():
-	return render_template('update_member.html')
-
-@app.route('/viewteam')
-def disp_team():
-	return render_template('team.html')
-
-@app.route('/bookhub')
-def disp_bookhub_page():
-	return render_template('books.html')
-
-
+# create and display the graph.
 @app.route('/graph')
 def disp_graph():
 
@@ -123,8 +122,10 @@ def disp_graph():
 
 	return render_template('graph.html')
 
-
-
+'''
+--------------------------------------------------------------------------------------------------------------------
+insert, delete and update operations. 
+'''
 @app.route('/UpdateCoreForm', methods = ['POST', 'GET'])
 def update_core_form():
 
@@ -141,6 +142,7 @@ def update_core_form():
 		else:
 			
 			update_core_query(usn, name, year, sem, branch, pod)
+			
 			return render_template('home.html')
 
 @app.route('/UpdateMemberForm', methods = ['POST', 'GET'])
@@ -161,8 +163,8 @@ def update_member_form():
 		else:
 			
 			update_member_query(usn, name, year, sem, branch, no_events, no_of_comps)
+			
 			return render_template('home.html')
-
 
 @app.route('/deletemember', methods = ['POST', 'GET'])
 def delete_member():
@@ -176,8 +178,6 @@ def delete_member():
 		delete_st(usn_st)
 
 	return render_template('home.html')
-
-
 
 @app.route('/InsertMembersForm', methods = ['POST', 'GET'])
 def insert_members_form():
@@ -218,6 +218,10 @@ def insert_core_form():
 
 		return render_template('home.html')
 
+'''
+-------------------------------------------------------------------------------------------------------------------------
+Dynamically displaying the contents of the tables using templates in Flask to return the data to the HTML file.
+'''
 
 @app.route('/viewoffice')
 def view_office():
@@ -243,7 +247,6 @@ def view_mem():
 
 	return render_template('view_members.html', result = data,)
 
-
 @app.route('/viewbooks')
 def disp_books():
 	conn, cur = connect()
@@ -251,24 +254,12 @@ def disp_books():
 
 	return render_template('view_books.html', result = data)
 
-
 @app.route('/viewstudentbooks')
 def disp_books_with_students():
 	conn, cur = connect()
 	data = join_books_and_students()
 
 	return render_template('view_noOf_students_withbooks.html', result = data)
-
-# redirects the user who logs in to the page that contains the hello() function (the /user/<name> page)
-@app.route('/login', methods = ['POST', 'GET'])
-def log():
-
-	if request.method == 'POST':
-		user = request.form['Name']
-		return redirect(url_for('hello', name = user))
-	else:
-		val = request.args.get('name')
-		return redirect(url_for('student_details'))
 
 
 if __name__ == '__main__':
