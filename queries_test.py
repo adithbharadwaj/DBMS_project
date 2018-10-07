@@ -198,17 +198,13 @@ def select_all_books():
 
 	return data
 
-def select_inDemand_books():
+def select_books_in_demand():
 
 	conn, cur = connect()
 	cur.execute('select * from in_demand')
 
 	data = cur.fetchall()
 	conn.close()
-
-	for r in data:
-		print(r)
-
 
 	return data
 
@@ -400,8 +396,6 @@ select_all_events()
 print('------')
 select_all_books()
 print('----------')
-select_inDemand_books()
-print('-----------')
 join_books_and_students()
 
 

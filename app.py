@@ -64,6 +64,13 @@ def disp_insertBooks_page():
 def disp_buy_books():
 	return render_template('buy_books.html')
 
+@app.route('/booksindemand')
+def disp_books_in_demand():
+
+	data = select_books_in_demand()
+	
+	return render_template('books_in_demand.html', result = data)
+
 # getting the details of a student from a form (in the html)
 # and using those details to render a template that dynamically displays the details in a page
 # the url in the login.html is of the form <form action = "http://localhost:5000/details" method = "POST">
@@ -255,6 +262,7 @@ def buy_books_function():
 		if(temp == True):
 			return render_template('home.html')
 		else:
+			return render_template('home.html')
 			print('No books available')
 
 '''
