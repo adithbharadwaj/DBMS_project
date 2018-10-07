@@ -6,14 +6,15 @@
 
 
 </head>
-<body>
-		<h1 style="font-family: 'K2D';font-size: 100PX;stroke: rgb(100,100,300);text-align: center;background-color: rgb(192,192,192);">BookHub</h1><br><br><br>
-		<button onclick="location.href = 'http://localhost:5000/viewbooks';">Books Available</button>
-		<button onclick="location.href = 'http://localhost:5000/viewstudentbooks';">Books purchased (students)</button>
+<body style="background-image: url(https://i.postimg.cc/x8TVNm9g/image.jpg);">
+		<h1 style="font-family: 'K2D';font-size: 75PX;text-align: center;color: white;">Books Purchased</h1><br><br><br>		<button onclick="location.href = 'http://localhost:5000/viewbooks';">Books Available</button>
+		<button onclick="location.href = 'http://localhost:5000/viewstudentbooks';">Books Sold (students)</button>
+				<button onclick="location.href = 'http://localhost:5000/buybooks';">Buy Books</button>
+		<br><br><br>
 
-		<table>
+		<table border style="padding: 10px;border:3px solid white;text-align: center;width: 100%;height: 50%;border-collapse: collapse;text-decoration-color: white;color: white ">
 
-               <tr>
+               <tr style="height:50px;border-bottom: 3px solid white;border-left: 3px solid white">
 
 
 				    <th><bold>USN</bold></th>
@@ -36,10 +37,10 @@
 				    <td>{{row[2]}}</td>
 				    <td>{{row[3]}}</td>
 				    <td>{{row[4]}}</td>
-				    <td>{{row[5]}}</td>
-				    <td>{{row[6]}}</td>
-					<td>{{row[7]}}</td>
 				    <td>{{row[8]}}</td>
+				    <td>{{row[9]}}</td>
+					<td>{{row[10]}}</td>
+				    <td>{{row[11]}}</td>
 	            </tr>
          
 	    	{% endfor %}
