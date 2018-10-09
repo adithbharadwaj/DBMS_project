@@ -2,7 +2,6 @@ from flask import Flask, redirect, url_for, request, render_template
 from queries_test import *
 import matplotlib.pyplot as plt
 
-
 app = Flask(__name__)
 
 # global variable to keep track of which group the user belongs to. Student, Core or office bearer.
@@ -56,6 +55,21 @@ def disp_team():
 @app.route('/bookhub')
 def disp_bookhub_page():
 	return render_template('books.html')
+
+@app.route('/insert_books')
+def disp_insertBooks_page():
+	return render_template('Insert_books.html')
+
+@app.route('/buybooks')
+def disp_buy_books():
+	return render_template('buy_books.html')
+
+@app.route('/booksindemand')
+def disp_books_in_demand():
+
+	data = select_books_in_demand()
+	
+	return render_template('books_in_demand.html', result = data)
 
 # getting the details of a student from a form (in the html)
 # and using those details to render a template that dynamically displays the details in a page
@@ -140,9 +154,8 @@ def update_core_form():
 		if(who_is_it == 'U' or who_is_it == 'C'):
 			return render_template('cannot_delete.html')
 		else:
-			
+
 			update_core_query(usn, name, year, sem, branch, pod)
-			
 			return render_template('home.html')
 
 @app.route('/UpdateMemberForm', methods = ['POST', 'GET'])
@@ -218,6 +231,40 @@ def insert_core_form():
 
 		return render_template('home.html')
 
+@app.route('/InsertBooksForm', methods = ['POST', 'GET'])
+def insert_books_form():
+
+	if(request.method == 'POST'):
+
+		if(who_is_it == 'U' or who_is_it == 'C'):
+			return render_template('cannot_delete.html')
+
+		book_name = request.form['name']
+		author = request.form['author']
+		stream = request.form['stream']
+		cost = request.form['cost']
+		quantity = request.form['quantity']
+		usn = request.form['usn']
+
+		insert_books(book_name, author, stream, cost, quantity, usn)
+
+		return render_template('home.html')
+
+@app.route('/buybooks_verify', methods = ['POST', 'GET'])
+def buy_books_function():
+
+	if(request.method == 'POST'):
+
+		id = request.form['id'] 
+
+		temp = buy_books(id)
+
+		if(temp == True):
+			return render_template('home.html')
+		else:
+			return render_template('home.html')
+			print('No books available')
+
 '''
 -------------------------------------------------------------------------------------------------------------------------
 Dynamically displaying the contents of the tables using templates in Flask to return the data to the HTML file.
@@ -250,7 +297,7 @@ def view_mem():
 @app.route('/viewbooks')
 def disp_books():
 	conn, cur = connect()
-	data = select_all_books()
+	data = show_books_view()
 
 	return render_template('view_books.html', result = data)
 
@@ -263,5 +310,8 @@ def disp_books_with_students():
 
 
 if __name__ == '__main__':
+	
+	app.secret_key = 'super secret key'
+
 	app.debug = True # debug is used for developing since it allows us to make changes in the python file without having to restart the server again and again.
 	app.run()

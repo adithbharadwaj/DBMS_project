@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Events</title>
+	<title>View Books</title>
 	<link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
 
 
 </head>
 <body style="background-image: url(https://i.postimg.cc/x8TVNm9g/image.jpg);">
-		<h1 style="font-family: 'K2D';font-size: 75PX;text-align: center;color: white;">Books Purchased</h1><br><br><br>		<button onclick="location.href = 'http://localhost:5000/viewbooks';">Books Available</button>
+		<h1 style="font-family: 'K2D';font-size: 75PX;text-align: center;color: white;">Books Available</h1><br><br><br>
+		<button onclick="location.href = 'http://localhost:5000/viewbooks';">Books Available</button>
 		<button onclick="location.href = 'http://localhost:5000/viewstudentbooks';">Books Sold (students)</button>
-				<button onclick="location.href = 'http://localhost:5000/buybooks';">Buy Books</button>
-				<button onclick="location.href = 'http://localhost:5000/booksindemand';">Books In Demand</button>
+		<button onclick="location.href = 'http://localhost:5000/buybooks';">Buy Books</button>
+		<button onclick="location.href = 'http://localhost:5000/booksindemand';">Books In Demand</button>
 		<br><br><br>
 
 		<table border style="padding: 10px;border:3px solid white;text-align: center;width: 100%;height: 50%;border-collapse: collapse;text-decoration-color: white;color: white ">
 
                <tr style="height:50px;border-bottom: 3px solid white;border-left: 3px solid white">
+                <th ><bold>Book ID</bold></th>
 
-
-				    <th><bold>USN</bold></th>
-				    <th><bold>Name</bold></th>
-				    <th><bold>Year</bold></th>
-				    <th><bold>Sem</bold></th>
-				    <th><bold>Branch</bold></th>
 				    <th><bold>Book Name</bold></th>
 				    <th><bold>Author</bold></th>
 				    <th><bold>Stream</bold></th>
 				    <th><bold>Cost</bold></th>
+				    
 
 	            </tr>
 
@@ -38,10 +35,7 @@
 				    <td>{{row[2]}}</td>
 				    <td>{{row[3]}}</td>
 				    <td>{{row[4]}}</td>
-				    <td>{{row[8]}}</td>
-				    <td>{{row[9]}}</td>
-					<td>{{row[10]}}</td>
-				    <td>{{row[11]}}</td>
+
 	            </tr>
          
 	    	{% endfor %}

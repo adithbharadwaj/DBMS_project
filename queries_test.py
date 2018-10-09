@@ -27,12 +27,21 @@ def create_bookhub_database():
 
 	conn, cur = connect()
 
-	cur.execute('''CREATE TABLE bookhub(book_name varchar(20), author varchar(20), stream varchar(10), 
+	cur.execute('''CREATE TABLE bookhub(id integer primary key autoincrement default 1, book_name varchar(20), author varchar(20), stream varchar(10), 
 				cost int, quantity int, sold_price int, usn varchar(10), foreign key(usn) references students(usn) )''')
 
 	conn.commit()
 	conn.close()
 
+def create_inDemand_table():
+
+	conn, cur = connect()
+
+	cur.execute('''CREATE TABLE in_demand(id integer , book_name varchar(20), author varchar(20), stream varchar(10), 
+				cost int, quantity int, sold_price int, usn varchar(10) )''')
+
+	conn.commit()
+	conn.close()
 
 def connect():
 
@@ -77,7 +86,7 @@ def insert_office(usn = 'null', name = 'null', year = 'null', sem='null' , branc
 def insert_books(book_name = 'null', author ='null', stream = 'null', cost='null', quantity='null', sold_price='null', usn='null'):
 
 	conn, cur = connect()
-	cur.execute('insert into bookhub values(?, ?, ?, ?, ?, ?, ?)', [book_name, author, stream, cost, quantity, sold_price, usn])
+	cur.execute('insert into bookhub(book_name, author, stream, cost, quantity, sold_price, usn) values(?, ?, ?, ?, ?, ?, ?)', [book_name, author, stream, cost, quantity, sold_price, usn])
 	conn.commit()
 	conn.close()	
 
@@ -100,6 +109,22 @@ def update_core_query(usn = 'null', name = 'null', year = 'null', sem='null' , b
 	cur.execute('update core set name = ?, year = ?, sem = ?, branch = ?, pod = ? where usn = ?', [name, year, sem, branch, pod, usn])
 	conn.commit()
 	conn.close()
+
+# basically update the bookhub table and decrement quantity.
+def buy_books(id):
+
+	conn, cur = connect()
+	cur.execute('select * from bookhub where id = ?', (id, ))
+	data = cur.fetchall()
+
+	if(data):
+		cur.execute('update bookhub set quantity = quantity - 1 where id = ?', (id, ))
+		conn.commit()
+		return True
+
+	else:
+		return False
+
 
 '''
 ------------------------------------------------------------------------------------------------------
@@ -170,6 +195,16 @@ def select_all_books():
 
 	for r in data:
 		print(r)
+
+	return data
+
+def select_books_in_demand():
+
+	conn, cur = connect()
+	cur.execute('select * from in_demand')
+
+	data = cur.fetchall()
+	conn.close()
 
 	return data
 
@@ -288,7 +323,6 @@ def join_books_and_students():
 
 	return data
 
-
 '''
 -----------------------------------------------------------------------------------------------------------------
 Views
@@ -299,10 +333,12 @@ def create_books_view():
 	conn, cur = connect()
 
 	cur.execute('''CREATE VIEW show_books as SELECT 
+					id,
 					book_name,
 					author,
 					stream,
-					cost
+					cost,
+					quantity
 					from bookhub;''')
 
 	conn.commit()
@@ -321,21 +357,46 @@ def show_books_view():
 
 	return data
 
-
 '''
+---------------------------------------------------------------------------------------------------------------------
+Triggers
+'''
+
+def create_trigger():
+
+	conn, cur = connect()
+
+	cur.execute('''CREATE trigger add_books_to_inDemand 
+				   
+				   after UPDATE 
+				   on bookhub
+				   WHEN NEW.quantity == 0
+				   
+				   BEGIN	 
+
+				   		insert into in_demand values(new.id, new.book_name, new.author, 
+				   		new.stream, new.cost, new.quantity, new.sold_price, new.usn);
+
+				   		delete from bookhub where id = new.id;
+
+				   END;
+
+				''')
+
+	conn.commit()
+	conn.close()
+
 select_all_students()
 print('-----')
 select_all_core()
 print('-----')
 select_all_office()
 print('------')
-group_students_by_branch()
-print('-------')
-group_students_by_year()
-print('-------')
+select_all_events()
+print('------')
 select_all_books()
-print('--------')
-join_books_and_students()
 print('----------')
-show_books_view()
-'''
+join_books_and_students()
+
+
+
