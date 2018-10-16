@@ -112,6 +112,7 @@ def disp_graph():
 	for r in data:
 		names.append(r[1])
 
+	print(val, names)	
 	plt.subplot(121)
 	plt.bar(x = names, height = val, width = 0.2, align = 'center', color = 'g')
 	plt.title('Students Grouped by Branch')

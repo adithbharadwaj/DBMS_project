@@ -219,8 +219,7 @@ def group_students_by_branch():
 
 	cur.execute("select count(*) as count_branch, branch from students group by branch order by count_branch desc")
 	data = cur.fetchall()
-	conn.close()
-
+	
 	for r in data:
 		print(r)
 
@@ -233,8 +232,7 @@ def group_students_by_year():
 
 	cur.execute("select count(*) as count_year, year from students group by year order by count_year desc")
 	data = cur.fetchall()
-	conn.close()
-
+	
 	for r in data:
 		print(r)
 
