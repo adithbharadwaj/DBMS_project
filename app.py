@@ -316,3 +316,5 @@ if __name__ == '__main__':
 
 	app.debug = True # debug is used for developing since it allows us to make changes in the python file without having to restart the server again and again.
 	app.run()
+
+	disp_graph()
