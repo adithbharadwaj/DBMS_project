@@ -136,7 +136,7 @@ selection queries:
 def select_one_student(usn):
 
 	conn, cur = connect()
-	cur.execute('select * from students where usn = ?', (usn, ))
+	cur.execute('select * from students where name like ?', ('%'+usn+'%', ))
 
 	data = cur.fetchall()
 	conn.close()
@@ -149,7 +149,7 @@ def select_one_student(usn):
 def select_one_core(usn):
 
 	conn, cur = connect()
-	cur.execute('select * from core where usn = ?', (usn, ))
+	cur.execute('select * from core where name like ?', ('%'+usn+'%', ))
 
 	data = cur.fetchall()
 	conn.close()
@@ -162,7 +162,7 @@ def select_one_core(usn):
 def select_one_book(name):
 
 	conn, cur = connect()
-	cur.execute('select * from bookhub where book_name = ?', (name, ))
+	cur.execute('select * from bookhub where book_name like ?', ('%'+name+'%', ))
 
 	data = cur.fetchall()
 	conn.close()
@@ -175,7 +175,7 @@ def select_one_book(name):
 def select_one_bookind(name):
 
 	conn, cur = connect()
-	cur.execute('select * from in_demand where book_name = ?', (name, ))
+	cur.execute('select * from in_demand where book_name like ?', ('%'+name+'%', ))
 
 	data = cur.fetchall()
 	conn.close()
