@@ -79,6 +79,64 @@ def disp_books_in_demand():
 	
 	return render_template('books_in_demand.html', result = data)
 
+@app.route('/search', methods = ['POST', 'GET'])
+def search():
+
+	if(request.method == 'POST'):
+		usn = request.form['search']
+
+		data = select_one_student(usn)
+
+		if(data != -1):
+			return render_template('view_members.html', result = data)
+		else:
+			d = select_all_students()
+			return render_template('view_members.html', result = d)
+
+@app.route('/searchcore', methods = ['POST', 'GET'])
+def searchc():
+
+	if(request.method == 'POST'):
+		usn = request.form['searchc']
+
+		data = select_one_core(usn)
+
+		if(data != -1):
+			return render_template('view_core.html', result = data)
+		else:
+			d = select_all_core()
+			return render_template('view_core.html', result = d)
+
+
+@app.route('/searchbooks', methods = ['POST', 'GET'])
+def searchb():
+
+	if(request.method == 'POST'):
+		usn = request.form['searchb']
+
+		data = select_one_book(usn)
+
+		if(data != -1):
+			return render_template('view_books.html', result = data)
+		else:
+			d = select_all_books()
+			return render_template('view_books.html', result = d)
+
+
+@app.route('/searchbooksind', methods = ['POST', 'GET'])
+def searchbind():
+
+	if(request.method == 'POST'):
+		usn = request.form['searchbind']
+
+		data = select_one_bookind(usn)
+
+		if(data != -1):
+			return render_template('books_in_demand.html', result = data)
+		else:
+			d = select_books_in_demand()
+			return render_template('books_in_demand.html', result = d)
+
 # getting the details of a student from a form (in the html)
 # and using those details to render a template that dynamically displays the details in a page
 # the url in the login.html is of the form <form action = "http://localhost:5000/details" method = "POST">

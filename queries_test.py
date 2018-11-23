@@ -133,6 +133,58 @@ selection queries:
 
 '''
 
+def select_one_student(usn):
+
+	conn, cur = connect()
+	cur.execute('select * from students where usn = ?', (usn, ))
+
+	data = cur.fetchall()
+	conn.close()
+
+	if(data):
+		return data
+	else:
+		return -1
+
+def select_one_core(usn):
+
+	conn, cur = connect()
+	cur.execute('select * from core where usn = ?', (usn, ))
+
+	data = cur.fetchall()
+	conn.close()
+
+	if(data):
+		return data
+	else:
+		return -1
+
+def select_one_book(name):
+
+	conn, cur = connect()
+	cur.execute('select * from bookhub where book_name = ?', (name, ))
+
+	data = cur.fetchall()
+	conn.close()
+
+	if(data):
+		return data
+	else:
+		return -1
+
+def select_one_bookind(name):
+
+	conn, cur = connect()
+	cur.execute('select * from in_demand where book_name = ?', (name, ))
+
+	data = cur.fetchall()
+	conn.close()
+
+	if(data):
+		return data
+	else:
+		return -1
+
 def select_all_events():
 
 	conn, cur = connect()
