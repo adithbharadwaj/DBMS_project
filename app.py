@@ -64,6 +64,14 @@ def disp_insertBooks_page():
 def disp_buy_books():
 	return render_template('buy_books.html')
 
+@app.route('/logout')
+def logouT():
+	
+	global who_is_it
+
+	who_is_it = None
+	return render_template('login.html')
+
 @app.route('/booksindemand')
 def disp_books_in_demand():
 
@@ -83,7 +91,8 @@ def details():
 
 	if request.method == 'POST':
 		user = request.form['usn']
-		who = check_login(user)
+		password = request.form['pass']
+		who = check_login(user, password)
 
 		if(who == 'User'):
 			who_is_it = 'U'
@@ -94,7 +103,7 @@ def details():
 
 		else:
 			who_is_it = 'N'
-			return render_template('verify.html', user = 'Not a member. please register. ')
+			return render_template('verify.html', user = 'Invalid Username or password')
 
 		return render_template('home.html', user = who)
 

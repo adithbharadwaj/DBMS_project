@@ -276,7 +276,7 @@ def delete_st(usn):
 '''
 Authenticating the user and checking to see if the usn exists in the database or not.
 '''
-def check_login(usn):
+def check_login(usn, password):
 
 	conn, cur = connect()
 
@@ -290,13 +290,13 @@ def check_login(usn):
 		cur.execute("select * from core where usn=?", (str(usn), ))
 		data1 = cur.fetchall()
 
-		if(data1):
+		if(data1 and password == 'core'):
 			return 'Core'
 		else:
 			cur.execute("select * from office where usn=?", (str(usn), ))
 			data2 = cur.fetchall()
 
-			if(data2):
+			if(data2 and password == 'office'):
 				return 'Office'
 			else:
 				return 'Not'
@@ -396,5 +396,3 @@ select_all_books()
 print('----------')
 join_books_and_students()
 select_all_students() 
-
-
