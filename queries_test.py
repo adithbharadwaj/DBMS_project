@@ -461,3 +461,6 @@ select_all_books()
 print('----------')
 join_books_and_students()
 select_all_students() 
+select_all_books()
+
+insert_books(book_name = 'Mechanics', author ='Forouzan', stream = 'ME', cost='400', quantity='2', sold_price='200', usn='2018UG002')
