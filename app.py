@@ -107,6 +107,20 @@ def searchc():
 			d = select_all_core()
 			return render_template('view_core.html', result = d)
 
+@app.route('/searchpod', methods = ['POST', 'GET'])
+def searchp():
+
+	if(request.method == 'POST'):
+		pod = request.form['searchp']
+
+		data = select_one_pod(pod)
+
+		if(data != -1):
+			return render_template('view_core.html', result = data)
+		else:
+			d = select_all_core()
+			return render_template('view_core.html', result = d)	
+
 
 @app.route('/searchbooks', methods = ['POST', 'GET'])
 def searchb():

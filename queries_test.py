@@ -159,6 +159,19 @@ def select_one_core(usn):
 	else:
 		return -1
 
+def select_one_pod(pod):
+
+	conn, cur = connect()
+	cur.execute('select * from core where pod like ?', ('%'+pod+'%', ))
+
+	data = cur.fetchall()
+	conn.close()
+
+	if(data):
+		return data
+	else:
+		return -1
+
 def select_one_book(name):
 
 	conn, cur = connect()
