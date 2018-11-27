@@ -463,11 +463,4 @@ join_books_and_students()
 select_all_students() 
 select_all_books()
 
-insert_books(book_name = 'Software Engineering', author ='Tanenbaum', stream = 'CS', cost='300', quantity='1', sold_price='200', usn='2018UG106')
-insert_books(book_name = 'OS', author ='Tanenbaum', stream = 'CS', cost='400', quantity='3', sold_price='300', usn='2018UG105')
-insert_books(book_name = 'FLAT', author ='Padma Reddy', stream = 'CS', cost='400', quantity='2', sold_price='500', usn='2018UG104')
-insert_books(book_name = 'Mechanics of Materials', author ='D. Chandrashekar', stream = 'ME', cost='400', quantity='2', sold_price='100', usn='2018UG102')
-insert_books(book_name = 'DBMS', author ='navathe', stream = 'CS', cost='400', quantity='4', sold_price='200', usn='2018UG101')
-insert_books(book_name = 'Introduction to Algorithms', author ='S. Sahani', stream = 'CS', cost='400', quantity='2', sold_price='200', usn='2018UG100')
-insert_books(book_name = 'Thermodynamics', author ='D. Chandrashekar', stream = 'ME', cost='400', quantity='2', sold_price='200', usn='2018UG0011')
-insert_books(book_name = 'Entrepreneurship', author ='Reddy', stream = 'CS', cost='400', quantity='1', sold_price='300', usn='2018UG004')
+
